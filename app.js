@@ -8,15 +8,19 @@ const express = require('express') //require : 요구한다, express를 불러�
 const app = express() //express의 일반적인 기능들의 모음
 
 
-app.use((req, res) => {
-    res.json({
-        "message" : "서버응답했음"
-    })
-})//req : 사용자 요청(받기) / res : 서버 응답(보내기)
+// app.use((req, res) => {
+//     res.json({
+//         "message" : "서버응답했음"
+//     })
+// })//req : 사용자 요청(받기) / res : 서버 응답(보내기)
 
 
 
+const productRoute = require('./routes/product')
 
+
+
+app.use('/product', productRoute)
 
 
 
