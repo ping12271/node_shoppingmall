@@ -17,10 +17,11 @@ const app = express() //express의 일반적인 기능들의 모음
 
 
 const productRoute = require('./routes/product')
-
+const orderRoute = require('./routes/order')
 
 
 app.use('/product', productRoute)
+app.use('/order', orderRoute) //order를 요청하면 orderRoute로 이동하겠다.
 
 
 
