@@ -42,9 +42,26 @@ router.post('/', (req, res) => {
 
 // product 불러오는 API
 router.get('/', (req, res) => {
-    res.json({
-        "message" : "product 불러오는 API"
-    })
+
+    productModel
+        .find()
+        .then(docs => {
+            res.json({
+                message : "successful get product",
+                count : docs.length,
+                products : docs
+            })
+        })
+        .catch(err => {
+            res.json({
+                message : err
+            })
+        })
+
+
+    // res.json({
+    //     "message" : "product 불러오는 API"
+    // })
 })
 
 
