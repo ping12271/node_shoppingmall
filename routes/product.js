@@ -6,8 +6,15 @@ const router = express.Router()
 // 3
 // product 등록하는 API
 router.post('/', (req, res) => {
+
+    const product = {
+        name : req.body.productName,
+        price : req.body.productPrice
+    }
+
     res.json({
-        "message" : "product 등록하는 API"
+        "message" : "product 등록하는 API",
+        productInfo : product
     })
 })
 

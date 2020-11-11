@@ -6,24 +6,29 @@
 
 const express = require('express') //require : 요구한다, express를 불러온다.
 const morgan = require('morgan')
+const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
 const app = express() //express의 일반적인 기능들의 모음
-
-
-// app.use((req, res) => {
-//     res.json({
-//         "message" : "서버응답했음"
-//     })
-// })//req : 사용자 요청(받기) / res : 서버 응답(보내기)
-
 
 
 const productRoute = require('./routes/product')
 const orderRoute = require('./routes/order')
 
+// DB 연결
+const dbAdress = ""
+
+
+mongoose
+    .connect(dbAdress) // 연결해라
+    .then(() => console.log("mongodb connected ...")) // 정상적으로 연결이 되면 then으로 간다
+    .catch(err => console.log(":::::::::::::::::::", err)) // 연결에 문제가 있으면 catch로 가라 
+
 
 
 // 미들웨어 설정
 app.use(morgan("dev"))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: false}))
 
 
 app.use('/product', productRoute)
