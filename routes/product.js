@@ -65,6 +65,26 @@ router.get('/', (req, res) => {
 })
 
 
+// detail product API - 하나만 불러오는 
+router.get('/:productID', (req, res) => {
+    productModel
+        .findById(req.params.productID)
+        .then(doc => {
+            res.json({
+                message : "get detail data",
+                product : doc
+            })
+        })
+        .catch(err => {
+            res.json({
+                message : err
+            })
+        })
+})
+
+
+
+
 // product 수정하는 API
 router.patch('/', (req, res) => {
     res.json({
