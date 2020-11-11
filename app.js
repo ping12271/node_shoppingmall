@@ -24,8 +24,10 @@ app.use('/product', productRoute)
 app.use('/order', orderRoute) //order를 요청하면 orderRoute로 이동하겠다.
 
 
-
 const port = 9999 //9999를 통해서 통신을 하겠다.
 
-app.listen(port, console.log("server started"))//listen(함수)-> app을 실행하겠다는 메서드(방법), port를 통해서만 실행하겠다.
+app.listen(port, console.log("server started"))
+//listen(함수)-> app을 실행하겠다는 메서드(방법), port를 통해서만 실행하겠다.
+
+
 

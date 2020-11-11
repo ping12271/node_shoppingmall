@@ -1,12 +1,11 @@
-
-
+// 1
 const express = require("express")
 const router = express.Router()
 
 
-
+// 3
 // product 등록하는 API
-router.post('/aaa', (req, res) => {
+router.post('/', (req, res) => {
     res.json({
         "message" : "product 등록하는 API"
     })
@@ -35,9 +34,6 @@ router.delete('/', (req, res) => {
 })
 
 
-
-
-
-
-
+// 2
 module.exports = router //라우터(router를 모듈화(module)해서 내보내겠다(exports).
+
