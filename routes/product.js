@@ -2,20 +2,42 @@
 const express = require("express")
 const router = express.Router()
 
+const productModel = require("../models/product")
+
 
 // 3
 // product 등록하는 API
 router.post('/', (req, res) => {
 
-    const product = {
+    // const product = {
+    //     name : req.body.productName,
+    //     price : req.body.productPrice
+    // }
+
+    // res.json({
+    //     "message" : "product 등록하는 API",
+    //     productInfo : product
+    // })
+
+    const newProduct = new productModel({
         name : req.body.productName,
         price : req.body.productPrice
-    }
-
-    res.json({
-        "message" : "product 등록하는 API",
-        productInfo : product
     })
+
+    newProduct
+        .save()
+        .then(doc => {
+            res.json({
+                message : "saved data",
+                productInfo : doc
+            })
+        })
+        .catch(err => {
+            res.json({
+                message : err
+            })
+        })
+
 })
 
 // product 불러오는 API
