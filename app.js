@@ -15,11 +15,14 @@ const productRoute = require('./routes/product')
 const orderRoute = require('./routes/order')
 
 // DB 연결
-const dbAdress = ""
-
+const dbAdress = "mongodb+srv://ping12271:Ghdghd11@cluster0.tqgbb.mongodb.net/shoppingmall?retryWrites=true&w=majority"
+const dboptions = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+} 
 
 mongoose
-    .connect(dbAdress) // 연결해라
+    .connect(dbAdress, dboptions) // 연결해라
     .then(() => console.log("mongodb connected ...")) // 정상적으로 연결이 되면 then으로 간다
     .catch(err => console.log(":::::::::::::::::::", err)) // 연결에 문제가 있으면 catch로 가라 
 
