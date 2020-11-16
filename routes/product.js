@@ -1,6 +1,5 @@
 // 1
 const express = require("express")
-const { disconnect } = require("mongoose")
 const router = express.Router()
 
 const productModel = require("../models/product")
