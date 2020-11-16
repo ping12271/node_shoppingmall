@@ -67,11 +67,13 @@ router.get('/', (req, res) => {
 
 // detail product API - 하나만 불러오는 
 router.get('/:productID', (req, res) => {
+
+    const id = req.params.productID
     productModel
-        .findById(req.params.productID)
+        .findById(id)
         .then(doc => {
             res.json({
-                message : "get detail data",
+                message : "get detail data " + id,
                 product : doc
             })
         })
@@ -83,14 +85,34 @@ router.get('/:productID', (req, res) => {
 })
 
 
-
-
 // product 수정하는 API
-router.patch('/', (req, res) => {
-    res.json({
-        "message" : "product 수정하는 API"
-    })
+router.patch('/:productID', (req, res) => {
+
+    const id = req.params.productID
+    const updateOps = {};
+    //사용자 입력값이 req.body -> ops -> updateOps로 담긴다.
+    for (const ops of req.body) {
+        updateOps[ops.propName] = ops.value;
+    }
+    productModel
+        .findByIdAndUpdate(id, {$set: updateOps}) //id의 내용을 updateOps로 대신한다
+        .then(() => {
+            res.json({
+                meassage : 'updated at ' + id
+            })
+        })
+        .catch(err => {
+            res.json({
+                message : err
+            })
+        })
+    // res.json({
+    //     "message" : "product 수정하는 API"
+    // })
 })
+
+
+
 
 // product 삭제하는 API(전체삭제)
 router.delete('/', (req, res) => {
@@ -113,11 +135,12 @@ router.delete('/', (req, res) => {
 
 //선택해서 한개만 삭제
 router.delete('/:productID', (req, res) => {
+    const id = req.params.productID
     productModel
-        .findByIdAndDelete(req.params.productID)
+        .findByIdAndDelete(id)
         .then(() => {
             res.json({
-                message : "deleted product at" + req.params.productID 
+                message : "deleted product at" + id
             })
         })
         .catch(err => {

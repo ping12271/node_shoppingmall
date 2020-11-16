@@ -13,3 +13,5 @@ const productSchema = mongoose.Schema({
 
 // 3
 module.exports = mongoose.model("product", productSchema)
+
+//이 파일은 데이터를 저장하는 형식이다.
