@@ -13,6 +13,7 @@ const app = express() //express의 일반적인 기능들의 모음
 
 const productRoute = require('./routes/product')
 const orderRoute = require('./routes/order')
+const userRoute = require('./routes/user')
 
 // DB 연결
 const dbAdress = "mongodb+srv://ping12271:Ghdghd11@cluster0.tqgbb.mongodb.net/shoppingmall?retryWrites=true&w=majority"
@@ -36,7 +37,7 @@ app.use(bodyParser.urlencoded({extended: false}))
 
 app.use('/product', productRoute)
 app.use('/order', orderRoute) //order를 요청하면 orderRoute로 이동하겠다.
-
+app.use('/auth', userRoute)
 
 const port = 9999 //9999를 통해서 통신을 하겠다.
 
