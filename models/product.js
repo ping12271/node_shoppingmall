@@ -8,7 +8,7 @@ const productSchema = mongoose.Schema({
     // 4
     name : {
         type : String,
-        required : true
+        required : true // 빈여백방지, 공백인 db금지
     },
     price : {
         type : Number,
@@ -20,4 +20,4 @@ const productSchema = mongoose.Schema({
 // 3
 module.exports = mongoose.model("product", productSchema)
 
-//이 파일은 데이터를 저장하는 형식이다.
+//db에 product라는 폴더에 저장된다.
