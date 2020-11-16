@@ -1,5 +1,4 @@
 const express = require('express')
-const { disconnect } = require('mongoose')
 const router = express.Router()
 
 const orderModel = require("../models/order")
@@ -41,7 +40,7 @@ router.get('/', (req, res) => {
         .then(docs => {
             res.json({
                 message : 'successful get order',
-                count : disconnect.length,
+                count : docs.length,
                 order : docs.map(doc => {
                     return {
                         id : doc._id,
@@ -93,17 +92,71 @@ router.get('/:orderID', (req, res) => {
 })
 
 
-router.patch('/', (req, res) => {
-   res.json({
-       "message" : "order를 수정하는 API"
-   })
+router.patch('/:orderID', (req, res) => {
+    const id = req.params.orderID
+    const updataOps = {};
+    for (const ops of req.body) {
+        updataOps[ops.propName] = ops.value;
+        //[ops.propName] : 변경할 대상자
+    }
+    orderModel
+        .findByIdAndUpdate(id, {$set: updataOps})
+        .then(() => {
+            res.json({
+                message : 'updated at ' + id,
+                request: {
+                    type : "GET",
+                    url: "http://localhost:9999/order/" + id
+                }
+            })
+        })
+        .catch(err => {
+            res.json({
+                type : "GET",
+                url : "http://localhost:9999/order" + id
+            })
+        })
 })
+
 
 router.delete('/', (req, res) => {
-    res.json({
-        "message" : "order 삭제하는 API"
-    })
+    
+    orderModel
+        .remove()
+        .then(() => {
+            res.json({
+                message : 'delete all order',
+                request : {
+                    type : "GET",
+                    url : "http://localhost:9999/order"
+                }
+            })
+        })
+        .catch(err => {
+            res.json({
+                message : err
+            })
+        })
 })
 
+router.delete('/:orderID', (req, res) => {
+    const id = req.params.orderID
+    orderModel
+        .findByIdAndDelete(id)
+        .then(() => {
+            res.json({
+                message : 'delete order at' + id,
+                request : {
+                    type : "GET",
+                    url : "http://localhost:9999/order"
+                }
+            })
+        })
+        .catch(err => {
+            res.json({
+                message : err
+            })
+        })
+})
 
 module.exports = router
