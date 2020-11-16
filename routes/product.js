@@ -1,5 +1,6 @@
 // 1
 const express = require("express")
+const { disconnect } = require("mongoose")
 const router = express.Router()
 
 const productModel = require("../models/product")
@@ -29,7 +30,15 @@ router.post('/', (req, res) => {
         .then(doc => {
             res.json({
                 message : "saved data",
-                productInfo : doc
+                productInfo : {
+                    id : doc._id,
+                    name : doc.name,
+                    price : doc.price,
+                    request : {
+                        type : "GET",
+                        url : "http://localhost:9999/product/" + doc._id
+                    }
+                }
             })
         })
         .catch(err => {
@@ -49,7 +58,17 @@ router.get('/', (req, res) => {
             res.json({
                 message : "successful get product",
                 count : docs.length,
-                products : docs
+                products : docs.map(doc => {
+                    return {
+                        id : doc._id,
+                        name : doc.name,
+                        price : doc.price,
+                        request: {
+                            type : "GET",
+                            url : "http://localhost:9999/product/" + doc._id
+                        }
+                    }
+                })
             })
         })
         .catch(err => {
@@ -74,7 +93,15 @@ router.get('/:productID', (req, res) => {
         .then(doc => {
             res.json({
                 message : "get detail data " + id,
-                product : doc
+                product : {
+                    id : doc._id,
+                    name : doc.name,
+                    price : doc.price
+                },
+                requst: {
+                    type : 'GET',
+                    url : "http://localhost:9999/product/"
+                }
             })
         })
         .catch(err => {
@@ -98,7 +125,11 @@ router.patch('/:productID', (req, res) => {
         .findByIdAndUpdate(id, {$set: updateOps}) //id의 내용을 updateOps로 대신한다
         .then(() => {
             res.json({
-                meassage : 'updated at ' + id
+                meassage : 'updated at ' + id,
+                request : {
+                    type : "GET",
+                    url : "http://localhost:9999/product/" + id
+                }
             })
         })
         .catch(err => {
@@ -112,15 +143,17 @@ router.patch('/:productID', (req, res) => {
 })
 
 
-
-
 // product 삭제하는 API(전체삭제)
 router.delete('/', (req, res) => {
     productModel
         .remove()
         .then(() => {
             res.json({
-                message : "deleted all product"
+                message : "deleted all product",
+                request : {
+                    type : "GET",
+                    url : "http://localhost:9999/product/"
+                }
             })
         })
         .catch(err => {
@@ -140,7 +173,11 @@ router.delete('/:productID', (req, res) => {
         .findByIdAndDelete(id)
         .then(() => {
             res.json({
-                message : "deleted product at" + id
+                message : "deleted product at" + id,
+                request : {
+                    type : "GET",
+                    url : "http://localhost:9999/product/"
+                }
             })
         })
         .catch(err => {
