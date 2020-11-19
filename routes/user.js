@@ -1,6 +1,7 @@
 const exress = require('express')
 const router = exress.Router()
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 const userModel = require('../models/user')
 
 
@@ -61,7 +62,7 @@ router.post('/register', (req, res) => {
 router.post('/login', (req, res) => {
 
 
-    // 이메일 유무 체크 -> 패스워드 매칭 -> 회원정보 뿌리기 
+    // 이메일 유무 체크 -> 패스워드 매칭 -> 회원정보 뿌리기 (토큰을 반환해줌)
     userModel
         .findOne({email: req.body.email})
         .then(user => {
@@ -79,9 +80,17 @@ router.post('/login', (req, res) => {
                             result : isMatch
                         })
                     } else {
+
+                        // 토큰 생성 : 접속정보 암호화
+                        const token = jwt.sign(
+                            {id : user._id, email : user.email}, //토큰 안에 담길 내용
+                            "hyeeun", // 암호화 키
+                            {expiresIn: "1d"} //토큰 유효 시간 (1일) 한달 M / 한시간 h
+                        )
+                        
                         res.json({
                             result : isMatch,
-                            message : "login user"
+                            tokenInfo : token
                         })
                     }
                 })
