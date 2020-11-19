@@ -57,7 +57,27 @@ router.post('/register', (req, res) => {
 })
 
 // 로그인 API
+// localhost:9999/auth/login
 router.post('/login', (req, res) => {
+
+
+    // 이메일 유무 체크 -> 패스워드 매칭 -> 회원정보 뿌리기 
+    userModel
+        .findOne({email: req.body.email})
+        .then(user => {
+            if(!user) { //user가 없으면
+                return res.json({
+                    message : 'email이 없습니다. 회원가입부터 해주세요'
+                })
+            } else {
+                console.log(user)
+            }
+        })
+        .catch(err => {
+            res.json({
+                message : err
+            })
+        })
 
 })
 
