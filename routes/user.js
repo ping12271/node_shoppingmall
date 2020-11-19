@@ -18,6 +18,7 @@ router.post('/register', (req, res) => {
                     message : 'email이 있습니다. 다른 email로 가입해주세요'
                 })
             } else {
+
                 bcrypt.hash(req.body.password, 10, (err, hash) => {
                     if(err) {
                         return res.json({
@@ -40,7 +41,7 @@ router.post('/register', (req, res) => {
                             })
                             .catch(err => {
                                 res.json({
-                                    message : err
+                                    message : err.message
                                 })
                             })
                     }
