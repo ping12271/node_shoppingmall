@@ -70,7 +70,21 @@ router.post('/login', (req, res) => {
                     message : 'email이 없습니다. 회원가입부터 해주세요'
                 })
             } else {
-                console.log(user)
+                // 패스워드 복호화 : compare(매칭해주는 함수), 사용자 입력값(req.body.password)과 db에 저장되어 있는 값(user.password)을 비교
+                // 매칭과정중에 에러가 있으면 -> err / 성공하든 실패하든 isMatch로 담기고 true,false로 리턴(내보내기)된다
+                bcrypt.compare(req.body.password, user.password, (err, isMatch) => {
+                    if(err || isMatch === false) {
+                        return res.json({
+                            message : 'password incorrect',
+                            result : isMatch
+                        })
+                    } else {
+                        res.json({
+                            result : isMatch,
+                            message : "login user"
+                        })
+                    }
+                })
             }
         })
         .catch(err => {
