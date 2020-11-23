@@ -3,7 +3,7 @@ const checkAuth = require('../middleware/check-auth')
 const router = express.Router()
 
 const {
-    orders_patch_order,
+    orders_post_order,
     orders_get_all,
     orders_get_order,
     orders_patch_order,
@@ -12,7 +12,7 @@ const {
 } = require('../controllers/order')
 
 // CRUD
-router.post('/', checkAuth, orders_patch_order)
+router.post('/', checkAuth, orders_post_order)
 
 router.get('/', checkAuth, orders_get_all)
 

@@ -60,9 +60,13 @@ exports.products_get_product = (req, res) => {
 // product 등록해주는 함수
 exports.products_post_product = (req, res) => {
 
+    const {name, price} = req.body
+    // name : req.body.productName,
+    // price : req.body.productPrice
+
     const newProduct = new productModel({
-        name : req.body.productName,
-        price : req.body.productPrice
+        name, price 
+        
     })
 
     newProduct

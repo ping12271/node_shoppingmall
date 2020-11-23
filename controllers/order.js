@@ -1,11 +1,11 @@
 const orderModel = require('../models/order')
 
 //order 등록해주는 함수
-exports.orders_patch_order = (req, res) => {
-    
+exports.orders_post_order = (req, res) => {
+    const {product, quantity} = req.body
     const newOrder = new orderModel({
-        product : req.body.productID,
-        quantity : req.body.qty
+        product,
+        quantity
     })
 
     newOrder

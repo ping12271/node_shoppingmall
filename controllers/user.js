@@ -7,8 +7,11 @@ exports.user_post_register = (req, res) => {
     
     //기존 이메일 유무체크 -> 패스워드 암호화 -> db에 저장
 
+    const {username, email, password} = req.body
+
+
     userModel
-        .findOne({email: req.body.email})
+        .findOne({email})
         .then(user => {
             if(user) {
                 return res.json({
@@ -16,15 +19,15 @@ exports.user_post_register = (req, res) => {
                 })
             } else {
 
-                bcrypt.hash(req.body.password, 10, (err, hash) => {
+                bcrypt.hash(password, 10, (err, hash) => {
                     if(err) {
                         return res.json({
                             message : err
                         })
                     } else {
                         const newUser = new userModel({
-                            username : req.body.username,
-                            email : req.body.email,
+                            username,
+                            email,
                             password : hash
                         })
                     
@@ -56,10 +59,11 @@ exports.user_post_register = (req, res) => {
 //user 로그인 함수
 exports.user_post_login = (req, res) => {
 
+    const {email, password} = req.body
 
     // 이메일 유무 체크 -> 패스워드 매칭 -> 회원정보 뿌리기 (토큰을 반환해줌)
     userModel
-        .findOne({email: req.body.email})
+        .findOne({email})
         .then(user => {
             if(!user) { //user가 없으면
                 return res.json({
@@ -68,7 +72,7 @@ exports.user_post_login = (req, res) => {
             } else {
                 // 패스워드 복호화 : compare(매칭해주는 함수), 사용자 입력값(req.body.password)과 db에 저장되어 있는 값(user.password)을 비교
                 // 매칭과정중에 에러가 있으면 -> err / 성공하든 실패하든 isMatch로 담기고 true,false로 리턴(내보내기)된다
-                bcrypt.compare(req.body.password, user.password, (err, isMatch) => {
+                bcrypt.compare(password, user.password, (err, isMatch) => {
                     if(err || isMatch === false) {
                         return res.json({
                             message : 'password incorrect',
