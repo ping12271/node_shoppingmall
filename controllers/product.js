@@ -1,6 +1,5 @@
 const productModel = require('../models/product')
 
-
 // product 전체데이터를 불러오는 함수
 exports.products_get_all = (req, res) => {
 
