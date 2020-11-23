@@ -14,3 +14,6 @@ module.exports = (req, res, next) => {
         });
     }
 }
+
+//토큰이 잘못되면 catch로 가서 에러가 발생한다.
+
